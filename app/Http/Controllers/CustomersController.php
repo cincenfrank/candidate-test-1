@@ -62,7 +62,7 @@ class CustomersController extends Controller
     {
         $customer->update($request->all());
 
-        return view('customers.edit', compact('customer'))->withMessage('Customer updated successfully.');
+        return redirect()->route('customers.edit', compact('customer'))->withMessage('Customer updated successfully.');
     }
 
     /**
@@ -73,8 +73,9 @@ class CustomersController extends Controller
      */
     public function destroy(Customer $customer)
     {
+        $customer->contracts()->delete();
+        $customer->orders()->delete();
         $customer->delete();
-
         return redirect()->route('customers.index')->withMessage('Customer deleted successfully');
     }
 }
